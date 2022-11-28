@@ -1,0 +1,64 @@
+{% extends "resource_info.html" %}
+{% set resource_type = "person" %}
+{% set resource_name = person_info['name'] %}
+
+{% block resource_content %}
+<div class="info">
+  <img class="poster" src="{{ get_resource_image(resource_type, person_info['profile_path']) }}">
+  <ul class="metadata">
+    <li class="tmdb">
+      <a href="{{ get_resource_url('person', person_info['id']) }}" target="_blank">
+        <img class="tmdb" src="{{ url_for('static', filename='img/tmdb.png') }}">
+      </a>
+    </li>
+    <li class="birthday">
+      <label>Birth day : </label>
+      <p>{{ person_info['birthday'] }}</p>
+    </li>
+    {% if person_info['deathday'] %}
+      <li class="deathday">
+        <label>Death day : </label>
+        <p>{{ person_info['deathday'] }}</p>
+      </li>
+    {% endif %}
+    <li class="biography">
+      <label>Biography : </label>
+      <p>{{ person_info['biography'] }}</p>
+    </li>
+  </ul>
+</div>
+<div class="credits">
+  <h3>Cast in movies</h3>
+  <ul id="movie-cast" class="credit">
+    {% for credit in (person_movies['cast'] | sort(attribute='popularity', reverse=True)) %}
+      {% with tile_image=get_resource_image("movie", credit["poster_path"]), tile_title=credit['title'], subtile_title=credit['character'], tile_link=url_for('movie.info', resource_id=credit['id']) %}
+        {% include "fragments/tile.html" %}
+      {% endwith %}
+    {% endfor %}
+  </ul>
+  <h3>Cast in TV shows</h3>
+  <ul id="tv-cast" class="credit">
+    {% for credit in (person_tvs['cast'] | sort(attribute='popularity', reverse=True)) %}
+      {% with tile_image=get_resource_image("tv", credit["poster_path"]), tile_title=credit['name'], subtile_title=credit['character'], tile_link=url_for('tv.info', resource_id=credit['id']) %}
+        {% include "fragments/tile.html" %}
+      {% endwith %}
+    {% endfor %}
+  </ul>
+  <h3>Crew in movies</h3>
+  <ul id="movie-crew" class="credit">
+    {% for credit in (person_movies['crew'] | sort(attribute='popularity', reverse=True)) %}
+      {% with tile_image=get_resource_image("movie", credit["poster_path"]),  tile_title=credit['title'], subtile_title=credit['job'], tile_link=url_for('movie.info', resource_id=credit['id']) %}
+        {% include "fragments/tile.html" %}
+      {% endwith %}
+    {% endfor %}
+  </ul>
+  <h3>Crew in TV shows</h3>
+  <ul id="tv-crew" class="credit">
+    {% for credit in (person_tvs['crew'] | sort(attribute='popularity', reverse=True)) %}
+      {% with tile_image=get_resource_image("tv", credit["poster_path"]), tile_title=credit['name'], subtile_title=credit['job'], tile_link=url_for('tv.info', resource_id=credit['id']) %}
+        {% include "fragments/tile.html" %}
+      {% endwith %}
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

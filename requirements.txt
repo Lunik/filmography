@@ -1,0 +1,16 @@
+python-dotenv
+
+# Flask requirements
+Flask
+django-htmlmin
+lxml
+
+# Forms
+Flask-WTF
+wtforms[email]
+
+# WSGI server to run the Flask application
+gunicorn
+
+# The Movie DB
+tmdbsimple

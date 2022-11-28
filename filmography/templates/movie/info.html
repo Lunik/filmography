@@ -1,0 +1,88 @@
+{% extends "resource_info.html" %}
+{% set resource_type = "movie" %}
+{% set resource_name = movie_info['title'] %}
+{% set resource_additional_name = movie_info['tagline'] %}
+
+{% block resource_content %}
+<div class="info">
+  <img src="{{ get_resource_image(resource_type, movie_info['poster_path']) }}">
+  <ul class="metadata">
+    <li class="tmdb">
+      <a href="{{ get_resource_url('movie', movie_info['id']) }}" target="_blank">
+        <img class="tmdb" src="{{ url_for('static', filename='img/tmdb.png') }}">
+      </a>
+    </li>
+    <li class="status">
+      <label>Status : </label>
+      <p>{{ movie_info['status'] }}</p>
+    </li>
+    <li class="release_date">
+      <label>Release date : </label>
+      <p>{{ movie_info['release_date'] }}</p>
+    </li>
+    <li class="overview">
+      <label>Overview : </label>
+      <p>{{ movie_info['overview'] }}</p>
+    </li>
+    {% if movie_providers %}
+      <li class="watch_providers">
+        <h3>Can be watched on : </h3>
+        {% if (movie_providers['flatrate'] | length) > 0 %}
+          <h4>Subscription</h4>
+          <ul class="provider" id="Subscription">
+            {% for provider in movie_providers['flatrate'] %}
+              <li>
+                <a href="{{ movie_providers['link'] }}" target="_blank">
+                  <img src="{{ get_resource_image('watch_provider', provider['logo_path']) }}">
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if (movie_providers['rent'] | length) > 0 %}
+          <h4>Rent</h4>
+          <ul class="provider" id="rent">
+            {% for provider in movie_providers['rent'] %}
+              <li>
+                <a href="{{ movie_providers['link'] }}" target="_blank">
+                  <img src="{{ get_resource_image('watch_provider', provider['logo_path']) }}">
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if (movie_providers['buy'] | length) > 0 %}
+          <h4>Buy</h4>
+          <ul class="provider" id="buy">
+            {% for provider in movie_providers['buy'] %}
+              <li>
+                <a href="{{ movie_providers['link'] }}" target="_blank">
+                  <img src="{{ get_resource_image('watch_provider', provider['logo_path']) }}">
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endif %}
+  </ul>
+</div>
+<div class="credits">
+  <h3>Cast in movie</h3>
+  <ul id="movie-cast" class="credit">
+    {% for credit in (movie_credits['cast'] | sort(attribute='order')) %}
+      {% with tile_image=get_resource_image("person", credit["profile_path"]), tile_title=credit['name'], subtile_title=credit['character'], tile_link=url_for('person.info', resource_id=credit['id']) %}
+        {% include "fragments/tile.html" %}
+      {% endwith %}
+    {% endfor %}
+  </ul>
+  <h3>Crew in movie</h3>
+  <ul id="movie-crew" class="credit">
+    {% for credit in movie_credits['crew'] %}
+      {% with tile_image=get_resource_image("person", credit["profile_path"]), tile_title=credit['name'], subtile_title=credit['job'], tile_link=url_for('person.info', resource_id=credit['id']) %}
+        {% include "fragments/tile.html" %}
+      {% endwith %}
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

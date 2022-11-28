@@ -1,0 +1,10 @@
+<form id="{{ form_id }}" method="{{ form_method }}" action="{{ form_action }}">
+  {% for field in form %}
+    {% if field.id == 'csrf_token' %}
+      {{ field }}
+    {% else %}
+      <div class="field">{{ field }}</div>
+    {% endif %}
+  {% endfor %}
+  <input type="submit" value="{{ form_submit_value }}" />
+</form>

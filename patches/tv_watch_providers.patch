@@ -1,0 +1,10 @@
+--- tmdbsimple/tv.py
++++ tmdbsimple/tv.py
+@@ -335,6 +335,7 @@
+ 
+         response = self._GET(path, kwargs)
+         self._set_attrs_to_values(response)
++        return response
+ 
+     def rating(self, **kwargs):
+         """

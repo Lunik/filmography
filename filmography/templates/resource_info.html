@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ resource_name }} - {{ resource_type.capitalize() }}{% endblock %}
+
+{% block content %}
+<h1 id="title">{{ resource_name }}</h1>
+{% if resource_additional_name %}
+  <p id="sub_title">{{ resource_additional_name }}</p>
+{% endif %}
+
+{% block resource_content %}{% endblock %}
+
+{% endblock %}

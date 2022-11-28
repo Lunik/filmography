@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ resource_type.capitalize() }}{% endblock %}
+
+{% block content %}
+<h1 id="title">Search by {{ resource_name }} name</h1>
+<div id="forms">
+  {% with form_title="Search by " + resource_type + " name", form_id="search-" + resource_type, form_method="post", form_action=url_for(resource_type + '.search'), form_submit_value="Search", form=search_form %}
+    {% include "fragments/form.html" %}
+  {% endwith %}
+</div>
+<ul class="resources">
+  {% for resource in (resources | sort(attribute=resource_sort_attribute, reverse=resource_sort_reverse)) %}
+    {% with tile_image=get_resource_image(resource_type, resource[resource_img_attr]), tile_title=resource[resource_name_attr], tile_link=url_for(resource_type + '.info', resource_id=resource['id']) %}
+      {% include "fragments/tile.html" %}
+    {% endwith %}
+  {% endfor %}
+</ul>
+{% endblock %}

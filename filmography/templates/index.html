@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% set is_home = True %}
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+<h1 id="title">Filmography</h1>
+<div class="search-select">
+  <h2>Search by</h2>
+  <ul>
+    <li id="person" class="{{ 'active' if resource_type == 'person' }}">
+      <a id="person" href="{{ url_for('person.search')}}">
+        {{ icon('person') }}
+        <p>Person name</p>
+      </a>
+    </li>
+    <li id="movie" class="{{ 'active' if resource_type == 'movie' }}">
+      <a id="movie" href="{{ url_for('movie.search')}}">
+        {{ icon('movie') }}
+        <p>Movie name</p>
+      </a>
+    </li>
+    <li id="tv" class="{{ 'active' if resource_type == 'tv' }}">
+      <a id="tv" href="{{ url_for('tv.search')}}">
+        {{ icon('tv') }}
+        <p>TV show name</p>
+      </a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
